@@ -1,0 +1,81 @@
+From 4a697fc6667e068cbc8da5a612ab0bffbb398455 Mon Sep 17 00:00:00 2001
+From: vaishnav98 <vaishnav@beagleboard.org>
+Date: Tue, 20 Apr 2021 18:37:37 +0530
+Subject: [PATCH] drivers: mikrobus: changes for new Click ID Mechanism/EEPROM
+
+---
+ drivers/misc/mikrobus/mikrobus_core.c | 16 ++++------------
+ drivers/misc/mikrobus/mikrobus_id.c   | 10 +++++-----
+ 2 files changed, 9 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/misc/mikrobus/mikrobus_core.c b/drivers/misc/mikrobus/mikrobus_core.c
+index f69176fc5d4e..b20281c0b150 100644
+--- a/drivers/misc/mikrobus/mikrobus_core.c
++++ b/drivers/misc/mikrobus/mikrobus_core.c
+@@ -97,7 +97,8 @@ int mikrobus_port_scan_eeprom(struct mikrobus_port *port)
+ 		goto err_free_buf;
+ 	}
+ 	w1_reset_bus(port->w1_master);
+-	w1_write_8(port->w1_master, MIKROBUS_EEPROM_EXIT_ID_CMD);
++	/* set RST HIGH */
++	gpiod_direction_output(port->gpios->desc[MIKROBUS_PIN_RST], 1);
+ 	set_bit(W1_ABORT_SEARCH, &port->w1_master->flags);
+ 	INIT_LIST_HEAD(&board->manifest_descs);
+ 	INIT_LIST_HEAD(&board->devices);
+@@ -698,17 +699,8 @@ static int mikrobus_port_id_eeprom_probe(struct mikrobus_port *port)
+ 			MIKROBUS_PINCTRL_STR[MIKROBUS_PINCTRL_SPI], MIKROBUS_PINCTRL_STATE_GPIO);
+ 
+ 	retval = mikrobus_port_pinctrl_select(port);
+-	/* set MOSI LOW, SCK HIGH */
+-	gpiod_direction_output(port->gpios->desc[MIKROBUS_PIN_MOSI], 0);
+-	gpiod_direction_output(port->gpios->desc[MIKROBUS_PIN_SCK], 1);
+-	msleep(100);
+-	for( i = 0; i < 4; i++){
+-		gpiod_set_value(port->gpios->desc[MIKROBUS_PIN_MOSI] , 1);
+-		udelay(1000);
+-		gpiod_set_value(port->gpios->desc[MIKROBUS_PIN_MOSI] , 0);
+-		udelay(1000);
+-	}
+-	msleep(100); /* temporary delay to fix ROM ID copy */
++	/* set RST LOW */
++	gpiod_direction_output(port->gpios->desc[MIKROBUS_PIN_RST], 0);
+ 
+ 	lookup = kzalloc(struct_size(lookup, table, 1),
+ 					GFP_KERNEL);
+diff --git a/drivers/misc/mikrobus/mikrobus_id.c b/drivers/misc/mikrobus/mikrobus_id.c
+index e891645f745c..d488a900d7cd 100644
+--- a/drivers/misc/mikrobus/mikrobus_id.c
++++ b/drivers/misc/mikrobus/mikrobus_id.c
+@@ -14,9 +14,9 @@
+ #include <linux/w1.h>
+ #include <linux/nvmem-provider.h>
+ 
+-#include "mikrobus_core.h"
++#include <linux/mikrobus.h>
+ 
+-#define W1_EEPROM_MIKROBUS_ID	0xAC
++#define W1_EEPROM_MIKROBUS_ID	0x43
+ 
+ #define W1_MIKROBUS_ID_EEPROM_SIZE	1536
+ #define W1_MIKROBUS_ID_EEPROM_SCRATCH_SIZE	32
+@@ -38,8 +38,8 @@ static int w1_mikrobus_id_readblock(struct w1_slave *sl, int off, int count, cha
+ 	
+ 	do {
+ 		wrbuf[0] = W1_MIKROBUS_ID_READ_EEPROM;
+-		wrbuf[1] = count >> 8;
+-		wrbuf[2] = count & 0xFF;
++		wrbuf[1] = 0;
++		wrbuf[2] = 0;
+ 
+ 		if (w1_reset_select_slave(sl))
+ 				return -1;
+@@ -204,4 +204,4 @@ module_w1_family(w1_family_mikrobus_id);
+ MODULE_AUTHOR("Vaishnav M A <vaishnav@beagleboard.org>");
+ MODULE_DESCRIPTION("w1 family ac driver for mikroBUS ID EEPROM");
+ MODULE_LICENSE("GPL");
+-MODULE_ALIAS("w1-family-" __stringify(W1_EEPROM_MIKROBUS_ID));
+\ No newline at end of file
++MODULE_ALIAS("w1-family-" __stringify(W1_EEPROM_MIKROBUS_ID));
+-- 
+2.25.1
+
