@@ -73,3 +73,8 @@ https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/mikrobus
 
 These patches are not tested, not used still by author, thus they are in unknown
 state *especially last two patches) for time being!
+
+#### Overlays
+https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/mikrobus-patches/overlays
+
+	0001-ARM-DT-Enable-symbols-when-CONFIG_OF_OVERLAY-is-used.patch

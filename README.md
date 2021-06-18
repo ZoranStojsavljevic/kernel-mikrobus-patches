@@ -7,7 +7,8 @@ For adding the mikrobus patches, presented here:
 
 https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/mikrobus-patches/actual-mikrobus-patches
 
-The bash script part which does the addition trick (keeping intact rcn's bb_kernel repo):
+The bash script part which does the addition trick (keeping intact rcn's bb_kernel
+repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 
 	patch_kernel () {
 		### --- Since the mikrobus patches are not there, add them to the patch set ---
@@ -37,10 +38,3 @@ The bash script part which does the addition trick (keeping intact rcn's bb_kern
 
 		cd "${DIR}/" || exit
 	}
-
-### NEXT TO DO: Overlay patches are NOT included (MUST include them in order mikrobus driver to work)
-
-This should be the very next task:
-
-	[1] To track and include in the repo overlay patches in the separate directory;
-	[2] To include in the above script also the overlay patches handling!
