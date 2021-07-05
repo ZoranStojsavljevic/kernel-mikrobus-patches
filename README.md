@@ -3,9 +3,9 @@
 Addition to latest Robert C. Nelson Beagle Board kernels in order to create test
 framework for mikrobus driver.
 
-For adding the mikrobus patches, presented here:
+For adding the additional patches, presented here:
 
-https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/mikrobus-patches/actual-mikrobus-patches
+https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/drivers/
 
 The bash script part which does the addition trick (keeping intact rcn's bb_kernel
 repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
@@ -13,12 +13,19 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 	patch_kernel () {
 		### --- Since the mikrobus patches are not there, add them to the patch set ---
 		cd "${DIR}/"
-		mkdir patches/drivers/mikrobus
+		mkdir "${DIR}/patches/drivers/mikrobus"
+		mkdir "${DIR}/patches/drivers/iio"
+		mkdir "${DIR}/patches/drivers/ti/gpio"
+		mkdir "${DIR}/patches/drivers/ti/overlays"
 
 		## cd "${DIR}/"
 		${git_bin} clone https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches.git
-		cp kernel-mikrobus-patches/mikrobus-patches/actual-mikrobus-patches/* \
-			/home/vuser/projects/kernel.bb/bb-kernel/patches/drivers/mikrobus
+		cp -Rfp "${DIR}/"kernel-mikrobus-patches/drivers/* "${DIR}/"patches/drivers/
+
+		### For now, patch.sh produces fatal error with ti/overlays/!
+		rm -rf "${DIR}/"patches/drivers/ti/overlays/
+		ls -al "${DIR}/"patches/drivers
+		ls -al "${DIR}/"patches/drivers/ti
 
 		## Mikrobus patch should be added to the patch set!
 		### --- End mikrobus patch set addition ---
@@ -36,5 +43,9 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 			fi
 		fi
 
+		### Workaround for failed ARM-DT-Enable-symbols-when-CONFIG_OF_OVERLAY-is-used.patch?!
+		echo "Workaround for failed ARM-DT-Enable-symbols-when-CONFIG_OF_OVERLAY-is-used.patch?!"
+		cp "${DIR}/"kernel-mikrobus-patches/makefiles/dts/Makefile "${DIR}/"KERNEL/arch/arm/boot/dts/Makefile
+		cp "${DIR}/"kernel-mikrobus-patches/makefiles/Makefile "${DIR}/"KERNEL/arch/arm/boot/Makefile
 		cd "${DIR}/" || exit
 	}

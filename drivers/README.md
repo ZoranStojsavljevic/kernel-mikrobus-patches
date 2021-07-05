@@ -4,7 +4,7 @@
 https://github.com/vaishnav98/bb-kernel/tree/clickid/patches/drivers/mikrobus
 
 #### Actual Mikrobus Patches
-https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/mikrobus-patches/actual-mikrobus-patches
+https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/drivers/mikrobus
 
 	0001-mikrobus-driver-update-patch.patch
 	0002-mikrobus_add-check-for-missing-w1-gpio.patch
@@ -74,7 +74,7 @@ https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/mikrobus
 These patches are not tested, not used still by author, thus they are in unknown
 state *especially last two patches) for time being!
 
-#### Overlays
-https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/mikrobus-patches/overlays
+#### Overlays (for now this patch does not work - MUST be fixed!)
+https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/drivers/ti/overlays
 
 	0001-ARM-DT-Enable-symbols-when-CONFIG_OF_OVERLAY-is-used.patch
