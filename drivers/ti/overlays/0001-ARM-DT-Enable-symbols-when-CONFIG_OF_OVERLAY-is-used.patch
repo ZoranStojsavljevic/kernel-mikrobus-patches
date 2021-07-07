@@ -5,8 +5,7 @@ Subject: [PATCH] ARM: DT: Enable symbols when CONFIG_OF_OVERLAY is used
 
 ---
  arch/arm/boot/Makefile     | 4 ++++
- arch/arm/boot/dts/Makefile | 5 +++++
- 2 files changed, 9 insertions(+)
+ 1 files changed, 4 insertions(+)
 
 diff --git a/arch/arm/boot/Makefile b/arch/arm/boot/Makefile
 index 0b3cd7a33..87a8b8db3 100644
@@ -23,20 +22,6 @@ index 0b3cd7a33..87a8b8db3 100644
  ifeq ($(CONFIG_XIP_KERNEL),y)
  
  cmd_deflate_xip_data = $(CONFIG_SHELL) -c \
-diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index 8e5d4ab4e..3e3518793 100644
---- a/arch/arm/boot/dts/Makefile
-+++ b/arch/arm/boot/dts/Makefile
-@@ -1,4 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0
-+
-+ifeq ($(CONFIG_OF_OVERLAY),y)
-+DTC_FLAGS += -@
-+endif
-+
- dtb-$(CONFIG_ARCH_ALPINE) += \
- 	alpine-db.dtb
- dtb-$(CONFIG_MACH_ARTPEC6) += \
 -- 
 2.31.1
 
