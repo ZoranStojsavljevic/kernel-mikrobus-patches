@@ -5,7 +5,7 @@ Subject: [PATCH] ARM: DT: Enable symbols when CONFIG_OF_OVERLAY is used
 
 ---
  arch/arm/boot/Makefile     | 4 ++++
- 1 files changed, 4 insertions(+)
+ 1 file changed, 4 insertions(+)
 
 diff --git a/arch/arm/boot/Makefile b/arch/arm/boot/Makefile
 index 0b3cd7a33..87a8b8db3 100644

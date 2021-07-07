@@ -13,17 +13,13 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 	patch_kernel () {
 		### --- Since the mikrobus patches are not there, add them to the patch set ---
 		cd "${DIR}/"
-		mkdir "${DIR}/patches/drivers/mikrobus"
-		mkdir "${DIR}/patches/drivers/iio"
-		mkdir "${DIR}/patches/drivers/ti/gpio"
-		mkdir "${DIR}/patches/drivers/ti/overlays"
 
-		## cd "${DIR}/"
 		${git_bin} clone https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches.git
 		cp -Rfp "${DIR}/"kernel-mikrobus-patches/drivers/* "${DIR}/"patches/drivers/
 
 		### For now, patch.sh produces fatal error with ti/overlays/!
-		rm -rf "${DIR}/"patches/drivers/ti/overlays/
+		rm -rf "${DIR}/"patches/drivers/ti/gpio/
+		rm -rf "${DIR}/"patches/drivers/iio/
 		ls -al "${DIR}/"patches/drivers
 		ls -al "${DIR}/"patches/drivers/ti
 
@@ -43,9 +39,5 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 			fi
 		fi
 
-		### Workaround for failed ARM-DT-Enable-symbols-when-CONFIG_OF_OVERLAY-is-used.patch?!
-		echo "Workaround for failed ARM-DT-Enable-symbols-when-CONFIG_OF_OVERLAY-is-used.patch?!"
-		cp "${DIR}/"kernel-mikrobus-patches/makefiles/dts/Makefile "${DIR}/"KERNEL/arch/arm/boot/dts/Makefile
-		cp "${DIR}/"kernel-mikrobus-patches/makefiles/Makefile "${DIR}/"KERNEL/arch/arm/boot/Makefile
 		cd "${DIR}/" || exit
 	}
