@@ -1,4 +1,4 @@
-### Kernel Mikrobus Patches
+### Kernel Mikrobus Patches for kernel 5.12
 
 Addition to latest Robert C. Nelson Beagle Board kernels in order to create test
 framework for mikrobus driver.
@@ -15,10 +15,11 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 		cd "${DIR}/"
 
 		${git_bin} clone https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches.git
+		cd "${DIR}/"kernel-mikrobus-patches/
+		${git_bin} checkout 5.12
 		cp -Rfp "${DIR}/"kernel-mikrobus-patches/drivers/* "${DIR}/"patches/drivers/
 
-		### For now, patch.sh produces fatal error with ti/overlays/!
-		rm -rf "${DIR}/"patches/drivers/ti/gpio/
+		## rm -rf "${DIR}/"patches/drivers/ti/gpio/
 		rm -rf "${DIR}/"patches/drivers/iio/
 		ls -al "${DIR}/"patches/drivers
 		ls -al "${DIR}/"patches/drivers/ti
