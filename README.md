@@ -19,7 +19,6 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 		${git_bin} checkout 5.12
 		cp -Rfp "${DIR}/"kernel-mikrobus-patches/drivers/* "${DIR}/"patches/drivers/
 
-		rm -rf "${DIR}/"patches/drivers/iio/
 		ls -al "${DIR}/"patches/drivers
 		ls -al "${DIR}/"patches/drivers/ti
 
@@ -59,7 +58,6 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 		dir 'drivers/greybus'
 		dir 'drivers/mikrobus'
 		dir 'drivers/serdev'
-		## dir 'drivers/iio'
 		dir 'drivers/fb_ssd1306'
 		dir 'drivers/bluetooth'
-}
+	}
