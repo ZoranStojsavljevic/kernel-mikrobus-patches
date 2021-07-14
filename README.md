@@ -1,4 +1,4 @@
-### Kernel Mikrobus Patches for kernel 5.12
+### Kernel Mikrobus Patches for kernel 5.12.x
 
 Addition to latest Robert C. Nelson Beagle Board kernels in order to create test
 framework for mikrobus driver.
@@ -19,12 +19,10 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 		${git_bin} checkout 5.12
 		cp -Rfp "${DIR}/"kernel-mikrobus-patches/drivers/* "${DIR}/"patches/drivers/
 
-		## rm -rf "${DIR}/"patches/drivers/ti/gpio/
 		rm -rf "${DIR}/"patches/drivers/iio/
 		ls -al "${DIR}/"patches/drivers
 		ls -al "${DIR}/"patches/drivers/ti
 
-		## Mikrobus patch should be added to the patch set!
 		### --- End mikrobus patch set addition ---
 
 		### --- Start processing patch set ---
@@ -42,3 +40,26 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 
 		cd "${DIR}/" || exit
 	}
+
+### Modifications of patch.sh in order to add additional patches and enable kernel 5.12.x to work
+
+	drivers () {
+		#https://github.com/raspberrypi/linux/branches
+		#exit 2
+		dir 'RPi'
+		dir 'drivers/ar1021_i2c'
+		dir 'drivers/spi'
+		dir 'drivers/tps65217'
+
+		dir 'drivers/ti/overlays'
+		dir 'drivers/ti/cpsw'
+		dir 'drivers/ti/serial'
+		dir 'drivers/ti/tsc'
+		dir 'drivers/ti/gpio'
+		dir 'drivers/greybus'
+		dir 'drivers/mikrobus'
+		dir 'drivers/serdev'
+		## dir 'drivers/iio'
+		dir 'drivers/fb_ssd1306'
+		dir 'drivers/bluetooth'
+}
