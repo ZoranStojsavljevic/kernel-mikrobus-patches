@@ -1,11 +1,11 @@
-### Kernel Mikrobus Patches for kernel 5.12.x
+### Kernel Mikrobus Patches for kernel 5.12.13-bone23
 
-Addition to latest Robert C. Nelson Beagle Board kernels in order to create test
-framework for mikrobus driver.
+Addition to Robert C. Nelson Beagle Board kernel 5.12.13-bone23 in order to
+create test framework for mikrobus driver.
 
 For adding the additional patches, presented here:
 
-https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/drivers/
+https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/5.12.13-bone23
 
 The bash script part which does the addition trick (keeping intact rcn's bb_kernel
 repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
@@ -16,7 +16,7 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 
 		${git_bin} clone https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches.git
 		cd "${DIR}/"kernel-mikrobus-patches/
-		${git_bin} checkout 5.12
+		${git_bin} checkout 5.12.13-bone23
 		cp -Rfp "${DIR}/"kernel-mikrobus-patches/drivers/* "${DIR}/"patches/drivers/
 
 		ls -al "${DIR}/"patches/drivers
@@ -40,7 +40,7 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 		cd "${DIR}/" || exit
 	}
 
-### Modifications of patch.sh in order to add additional patches and enable kernel 5.12.x to work
+### Modifications of patch.sh in order to add additional patches and enable kernel 5.12.13-bone23 to work
 
 	drivers () {
 		#https://github.com/raspberrypi/linux/branches
