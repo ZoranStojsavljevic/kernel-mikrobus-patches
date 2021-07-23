@@ -1,14 +1,25 @@
 ### Kernel Mikrobus Patches for kernel 5.12.18-bone25
 
-Addition to Robert C. Nelson Beagle Board kernel 5.12.18-bone25 in order to
-create test framework for mikrobus driver.
+Extention to Robert C. Nelson's Embedded Debian Beagle Board kernel:
 
-For adding the additional patches, presented here:
+https://github.com/ZoranStojsavljevic/BeagleBoard-Workshop-Examples/tree/master/Kernel_Porting_Guide
+
+Modified string to original, presented above:
+
+	$ git clone https://github.com/RobertCNelson/bb-kernel.git
+	$ cd bb-kernel
+	$ git remote show origin
+	$ git checkout 5.12.18-bone25
+	$ git branch ## to verify the execution of the last command
+	$ git describe
+	$ ./build_kernel.sh
+
+This is a support to 5.12.18-bone25 in order to create test framework for MikroBUS driver:
 
 https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/5.12.18-bone25
 
 The bash script part which does the addition trick (keeping intact rcn's bb_kernel
-repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
+repo) is sketched here (just a sketch for mikrobus patches, to give an idea):
 
 	patch_kernel () {
 		### --- Since the mikrobus patches are not there, add them to the patch set ---
@@ -61,3 +72,8 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 		dir 'drivers/fb_ssd1306'
 		dir 'drivers/bluetooth'
 	}
+
+### defconfig
+https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/blob/5.12.18-bone25/defconfig
+
+Used as .config to build Robert C. Nelson's Embedded Debian Beagle PB Board kernel.
