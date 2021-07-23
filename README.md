@@ -50,12 +50,13 @@ repo) is schetched here (just a sketch for mikrobus patches, to give an idea):
 		dir 'drivers/spi'
 		dir 'drivers/tps65217'
 
-		dir 'drivers/ti/overlays'
+		dir 'drivers/ti/overlays'	## Added from kernel-mikrobus-patches github repo
 		dir 'drivers/ti/cpsw'
 		dir 'drivers/ti/serial'
 		dir 'drivers/ti/tsc'
+		dir 'drivers/ti/gpio'
 		dir 'drivers/greybus'
-		dir 'drivers/mikrobus'
+		dir 'drivers/mikrobus'		## Added from kernel-mikrobus-patches github repo
 		dir 'drivers/serdev'
 		dir 'drivers/fb_ssd1306'
 		dir 'drivers/bluetooth'
