@@ -16,7 +16,7 @@ https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/drivers/
 
 They are working with the latest Linux trees kernels, with Robert C. Nelson's patches:
 
-https://github.com/RobertCNelson/bb-kernel/tree/am33x-v5.12/patches
+https://github.com/RobertCNelson/bb-kernel/tree/am33x-v5.13/patches
 
 The mikrobus_core.c compilation introduces the following compiling warnings!
 

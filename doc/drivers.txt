@@ -15,5 +15,4 @@ drivers () {
 	dir 'drivers/mikrobus'
 	dir 'drivers/serdev'
 	dir 'drivers/fb_ssd1306'
-	dir 'drivers/bluetooth'
 }

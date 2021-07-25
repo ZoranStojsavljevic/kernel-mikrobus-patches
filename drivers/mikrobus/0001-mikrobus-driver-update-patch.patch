@@ -49,10 +49,10 @@ diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
 index 9252c020fe50..98d6be2597c8 100644
 --- a/drivers/misc/Kconfig
 +++ b/drivers/misc/Kconfig
-@@ -473,4 +473,5 @@ source "drivers/misc/ocxl/Kconfig"
- source "drivers/misc/cardreader/Kconfig"
+@@ -464,4 +464,5 @@ source "drivers/misc/cardreader/Kconfig"
  source "drivers/misc/habanalabs/Kconfig"
  source "drivers/misc/uacce/Kconfig"
+ source "drivers/misc/pvpanic/Kconfig"
 +source "drivers/misc/mikrobus/Kconfig"
  endmenu
 diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
@@ -629,8 +629,8 @@ index 000000000000..07f9f3cc9991
 +		strncpy(i2c->type, dev->drv_name, sizeof(i2c->type) - 1);
 +		if (dev->irq)
 +			i2c->irq = mikrobus_irq_get(port, dev->irq, dev->irq_type);
-+		if (dev->properties)
-+			i2c->properties = dev->properties;
++		// if (dev->properties)
++		//	i2c->properties = dev->properties;
 +		i2c->addr = dev->reg;
 +		dev->dev_client = (void *) i2c_new_client_device(port->i2c_adap, i2c);
 +		break;
