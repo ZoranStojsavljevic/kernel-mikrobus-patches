@@ -89,17 +89,30 @@ Seems that i2c structure in include/linux/i2c.h had some struct members' changes
 		void            *platform_data;
 		struct device_node *of_node;
 		struct fwnode_handle *fwnode;
-	==>>	const struct software_node *swnode;	 <<== new memeber of the structure
-	==>>	const struct property_entry *properties; <<== obsolete member of the structure
+	+	const struct software_node *swnode;	 // <<== new member of the structure
+	-	const struct property_entry *properties; // <<== obsolete member of the structure
 		const struct resource *resources;
 		unsigned int    num_resources;
 		int             irq;
 	};
 
-Thus, to formally solve this issue the lines 572 and 753 were commented out!
+Thus, to solve this issue the line 753 adds function helper:
 
-	572:	// if (dev->properties)
-	573:	//	i2c->properties = dev->properties;
+https://elixir.bootlin.com/linux/v5.13.6/source/drivers/base/swnode.c#L723
+
+	diff --git a/mikrobus_core.c b/mikrobus_core.c
+	index 53d2e16..8729d68 100644
+	--- a/mikrobus_core.c
+	+++ b/mikrobus_core.c
+	@@ -590,7 +590,7 @@ static int mikrobus_device_register(struct mikrobus_port *port,
+	                if (dev->irq)
+	                        i2c->irq = mikrobus_irq_get(port, dev->irq, dev->irq_type);
+	                if (dev->properties)
+	-                       i2c->properties = dev->properties;
+	+                       i2c->swnode = software_node_alloc(dev->properties);
+	                i2c->addr = dev->reg;
+	                dev->dev_client = (void *) i2c_new_client_device(port->i2c_adap, i2c);
+	                break;
 
 To solve error below:
 

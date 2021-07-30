@@ -107,7 +107,7 @@ new file mode 100644
 index 000000000000..07f9f3cc9991
 --- /dev/null
 +++ b/drivers/misc/mikrobus/mikrobus_core.c
-@@ -0,0 +1,953 @@
+@@ -0,0 +1,973 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * mikroBUS driver for instantiating add-on
@@ -226,6 +226,26 @@ index 000000000000..07f9f3cc9991
 +	return retval;
 +}
 +EXPORT_SYMBOL_GPL(mikrobus_port_scan_eeprom);
++
++static struct software_node *software_node_alloc(const struct property_entry *properties)
++{
++	struct property_entry *props;
++	struct software_node *node;
++
++	props = property_entries_dup(properties);
++	if (IS_ERR(props))
++		return ERR_CAST(props);
++
++	node = kzalloc(sizeof(*node), GFP_KERNEL);
++	if (!node) {
++		property_entries_free(props);
++		return ERR_PTR(-ENOMEM);
++	}
++
++	node->properties = props;
++
++	return node;
++}
 +
 +static ssize_t name_show(struct device *dev, struct device_attribute *attr,
 +						 char *buf)
@@ -629,8 +649,8 @@ index 000000000000..07f9f3cc9991
 +		strncpy(i2c->type, dev->drv_name, sizeof(i2c->type) - 1);
 +		if (dev->irq)
 +			i2c->irq = mikrobus_irq_get(port, dev->irq, dev->irq_type);
-+		// if (dev->properties)
-+		//	i2c->properties = dev->properties;
++		if (dev->properties)
++			i2c->swnode = software_node_alloc(dev->properties);
 +		i2c->addr = dev->reg;
 +		dev->dev_client = (void *) i2c_new_client_device(port->i2c_adap, i2c);
 +		break;
