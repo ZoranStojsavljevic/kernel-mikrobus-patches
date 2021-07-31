@@ -14,6 +14,9 @@ https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/drivers/
 	0006-greybus-add-gb_netlink-patch.patch
 	0007-mikrobus-mikrobus-over-greybus.patch
 
+	Enabling PB overlay by patching arch/arm/boot/dts/am335x-pocketbeagle.dts
+	0008-Adding-modified-arch-arm-boot-dts-am335x-pocketbeagl.patch
+
 They are working with the latest Linux trees kernels, with Robert C. Nelson's patches:
 
 https://github.com/RobertCNelson/bb-kernel/tree/am33x-v5.13/patches
@@ -51,7 +54,7 @@ to make latest kernels compile/link.
 There is well known fact that Robert C Nelson made mikrobus.h as addition and
 available in the kernel tree (positioned in the following location):
 
-	.../include/linux/mikrobus.h
+	include/linux/mikrobus.h
 
 This file is known as mikrobus_core.h (and included in the mikrobus driver itself)
 from the following Out Of Tree mikrobus driver:
@@ -73,8 +76,3 @@ https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/doc
 
 These patches are not tested, not used still by author, thus they are in unknown
 state (especially last two patches) for time being!
-
-#### Overlays
-https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/main/drivers/ti/overlays
-
-	0001-ARM-DT-Enable-symbols-when-CONFIG_OF_OVERLAY-is-used.patch
