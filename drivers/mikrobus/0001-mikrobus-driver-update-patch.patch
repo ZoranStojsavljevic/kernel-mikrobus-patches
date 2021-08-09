@@ -28,7 +28,7 @@ Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
  drivers/misc/Makefile                     |   1 +
  drivers/misc/mikrobus/Kconfig             |  16 +
  drivers/misc/mikrobus/Makefile            |   6 +
- drivers/misc/mikrobus/mikrobus_core.c     | 953 ++++++++++++++++++++++
+ drivers/misc/mikrobus/mikrobus_core.c     | 981 ++++++++++++++++++++++
  drivers/misc/mikrobus/mikrobus_core.h     | 201 +++++
  drivers/misc/mikrobus/mikrobus_id.c       | 207 +++++
  drivers/misc/mikrobus/mikrobus_manifest.c | 475 +++++++++++
@@ -107,7 +107,7 @@ new file mode 100644
 index 000000000000..07f9f3cc9991
 --- /dev/null
 +++ b/drivers/misc/mikrobus/mikrobus_core.c
-@@ -0,0 +1,973 @@
+@@ -0,0 +1,981 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * mikroBUS driver for instantiating add-on
@@ -381,7 +381,7 @@ index 000000000000..07f9f3cc9991
 +	struct mikrobus_port *port;
 +
 +	if(dev->type != &mikrobus_port_type)
-+		return 0;	
++		return 0;
 +
 +	port = to_mikrobus_port(dev);
 +
@@ -566,7 +566,7 @@ index 000000000000..07f9f3cc9991
 +	struct gpiod_lookup_table *lookup;
 +	struct regulator_consumer_supply regulator;
 +	char devname[MIKROBUS_NAME_SIZE];
-+	int i;
++	int i, error;
 +	u64 *val;
 +
 +	dev_info(&port->dev, "registering device : %s", dev->drv_name);
@@ -649,8 +649,16 @@ index 000000000000..07f9f3cc9991
 +		strncpy(i2c->type, dev->drv_name, sizeof(i2c->type) - 1);
 +		if (dev->irq)
 +			i2c->irq = mikrobus_irq_get(port, dev->irq, dev->irq_type);
-+		if (dev->properties)
++		if (dev->properties) {
 +			i2c->swnode = software_node_alloc(dev->properties);
++			/* Create primary fwnode for the device - copies everything */
++			i2c->fwnode = fwnode_create_software_node(dev->properties, NULL);
++			if (IS_ERR_OR_NULL(i2c->fwnode)) {
++				error = PTR_ERR(i2c->fwnode);
++				fwnode_remove_software_node(i2c->fwnode);
++				return error;
++			}
++		}
 +		i2c->addr = dev->reg;
 +		dev->dev_client = (void *) i2c_new_client_device(port->i2c_adap, i2c);
 +		break;
@@ -1331,7 +1339,7 @@ index 000000000000..e891645f745c
 +	u8 wrbuf[3];
 +	u8 *cmp;
 +	int tries = W1_MIKROBUS_ID_EEPROM_READ_RETRIES;
-+	
++
 +	do {
 +		wrbuf[0] = W1_MIKROBUS_ID_READ_EEPROM;
 +		wrbuf[1] = count >> 8;
@@ -1393,7 +1401,7 @@ index 000000000000..e891645f745c
 +			W1_MIKROBUS_ID_EEPROM_WRITE_RETRIES);
 +		return -EIO;
 +	}
-+		
++
 +	wrbuf[0] = W1_MIKROBUS_ID_EEPROM_COPY_SCRATCH;
 +	wrbuf[1] = addr >> 8;
 +	wrbuf[2] = addr & 0xFF;
@@ -1440,7 +1448,7 @@ index 000000000000..e891645f745c
 +	mutex_lock(&sl->master->bus_mutex);
 +	ret = w1_mikrobus_id_readblock(sl, off, count, buf);
 +	mutex_unlock(&sl->master->bus_mutex);
-+	
++
 +	return ret;
 +}
 +
@@ -1455,7 +1463,7 @@ index 000000000000..e891645f745c
 +	mutex_lock(&sl->master->bus_mutex);
 +	ret = w1_mikrobus_id_writeblock(sl, off, count, buf);
 +	mutex_unlock(&sl->master->bus_mutex);
-+	
++
 +	return ret;
 +}
 +

@@ -647,3 +647,19 @@ bin/ntpd" pid=204 comm="apparmor_parser"
 [   30.385296] usb1: MAC 42:07:1c:e0:78:58
 [   31.936355] IPv6: ADDRCONF(NETDEV_CHANGE): usb1: link becomes ready
 ```
+
+### [3] i2c structure member fwnode (kernel 5.13.8-bone15)
+
+In function static int mikrobus_device_register(), code addition:
+```
++		if (dev->properties) {
++			i2c->swnode = software_node_alloc(dev->properties);
++			/* Create primary fwnode for the device - copies everything */
++			i2c->fwnode = fwnode_create_software_node(dev->properties, NULL);
++			if (IS_ERR_OR_NULL(i2c->fwnode)) {
++				error = PTR_ERR(i2c->fwnode);
++				fwnode_remove_software_node(i2c->fwnode);
++				return error;
++			}
++		}
+```
