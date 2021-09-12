@@ -1,3 +1,10 @@
+### Anouncement: this git repo is obsolete, since from Robert C. Nelson's kernel 5.14.x
+### mikrobus patches are added to the kernel. These mikrobus patches are placed here:
+https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/am33x-v5.13/drivers/mikrobus
+
+### The original patches are placed in the mikrobus-staging directory:
+https://github.com/ZoranStojsavljevic/kernel-mikrobus-patches/tree/am33x-v5.13/drivers/mikrobus-staging
+
 ### Kernel Mikrobus Patches for kernel am33x-v5.13
 
 Extention to Robert C. Nelson's Embedded Debian Beagle Board kernel:
